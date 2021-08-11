@@ -79,6 +79,13 @@ function draw() {
     bunny.y=550;
     text("Again",200,200);
   }
+
+  if(bunny.isTouching(brick4)){
+    bunny.x=40;
+    bunny.y=550;
+    text("Again",200,200);
+  }
+
   drawSprites();
 
   bunny.shapeColor = "pink"
