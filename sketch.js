@@ -1,3 +1,6 @@
+var score=0;
+var snakeGroup;
+
 function preload() {
   bgImage = loadImage("images/grass.jpg");
   bunnyImage = loadImage("images/bunny.jpg");
@@ -11,6 +14,8 @@ function setup() {
   bg = createSprite(300,300);
   bg.addImage(bgImage);
   bg.scale= 2;
+  snakeGroup = new Group();
+
 
   edges = createEdgeSprites();
   bunny = createSprite(40,550,20,20);
@@ -31,8 +36,9 @@ function setup() {
  
 }
 
+
 function draw() {
-    
+
 
   bunny.bounceOff(edges[0]);
   bunny.bounceOff(edges[1]);
@@ -47,6 +53,7 @@ function draw() {
   brick4.bounceOff(edges[1]);
   brick4.bounceOff(edges[0]);
 
+  
 
   if(keyDown("up")){
     bunny.y=bunny.y-3;
@@ -61,8 +68,14 @@ function draw() {
     bunny.x=bunny.x+3;
   }
   if(bunny.isTouching(carrot)){
-    text("you win",300,450);
+    bunny.velocity=0;
+    textSize(50);
+    fill('black')
+    text('YOU WIN',200,300);
+
   }
+
+
   if(bunny.isTouching(brick1)){
     bunny.x=40;
     bunny.y=550;
@@ -84,9 +97,28 @@ function draw() {
     bunny.x=40;
     bunny.y=550;
     text("Again",200,200);
+  
   }
 
+  generateSnake();
+
+
+  
+      for(var i = 0; i<(snakeGroup).length; i++){
+        var temp = (snakeGroup).get(i);
+        if (bunny.isTouching(temp)){
+          bunny.x=40;
+          bunny.y=550
+          score++;
+          temp.destroy();
+          temp=null;
+        }
+      }
+    
   drawSprites();
+  textSize(20);
+  fill('yellow')
+  text("Snakes destroyed: "+score,400,590);
 
   bunny.shapeColor = "pink"
   carrot.shapeColor = "orange"
@@ -94,8 +126,19 @@ function draw() {
   brick2.shapeColor = "red"
   brick3.shapeColor = "red"
   brick4.shapeColor = "red"
+  text.shapeColor = 'red'
 
+    }
 
+function generateSnake(){
+  if(frameCount % 30 === 0){
+    var snake = createSprite(600,random(70,520),random(30,120),5);
+    snake.shapeColor='blue'
+    snake.velocityX=random(-30,0);
+    snake.velocityY=random(0,0);
+    snakeGroup.add(snake);
+
+  }
 }
 
 
